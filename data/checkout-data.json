@@ -1,0 +1,5 @@
+[
+    { "firstName": "", "lastName": "", "zip": "", "expectedError": "Error: First Name is required" },
+    { "firstName": "Eduardo", "lastName": "", "zip": "", "expectedError": "Error: Last Name is required" },
+    { "firstName": "Eduardo", "lastName": "Ramírez", "zip": "", "expectedError": "Error: Postal Code is required" }
+]

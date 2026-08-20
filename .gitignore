@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Playwright Test Results & Reports
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Carpeta de autenticación (Cubre ambas barras para que no se suba jamás)
+.auth/
+playwright/.auth/
+playwright\.auth/
+
+# Archivos zip temporales
+*.zip
+
+# Entornos y sistema
+.env
+.DS_Store
+Thumbs.db

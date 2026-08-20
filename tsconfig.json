@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler", // <--- Cambia a bundler
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true
+  }
+}
