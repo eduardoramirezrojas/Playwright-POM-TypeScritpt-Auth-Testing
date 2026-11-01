@@ -2,9 +2,7 @@ name: Running test
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - test/add-full-test-suite-workflow
+
 jobs:
     tests:
       timeout-minutes: 60
