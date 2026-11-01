@@ -34,7 +34,6 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Playwright Browsers
-        if: steps.playwright-cache.outputs.cache-hit !='true'
         run: npx playwright install --with-deps ${{ matrix.browser }}
 
       - name: Install Playwright Dependences (if cached)
