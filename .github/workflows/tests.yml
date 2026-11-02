@@ -69,7 +69,7 @@ jobs:
         path: playwright/.auth/
 
     - name: Install Playwright Browser
-      run: npx playwright install --with-deps ${{ matrix.browser }}
+      run: npx playwright install --with-deps
 
     - name: Run Playwright tests
       run: npx playwright test --project=${{ matrix.browser }}
