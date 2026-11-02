@@ -2,50 +2,51 @@ name: Running test
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - test/add-full-test-suite-workflow
 
 jobs:
-    tests:
-      timeout-minutes: 60
-      runs-on: ubuntu-22.04
+  tests:
+    timeout-minutes: 60
+    runs-on: ubuntu-22.04
 
-      strategy:
-        fail-fast: false
-        matrix:
-          browser: [chromium, firefox, webkit]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
 
-      steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: 'npm'
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+    - name: Install dependencies
+      run: npm ci
 
-      - name: Cache Playwright Browsers
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/package-lock.json') }}
+    - name: Cache Playwright Browsers
+      uses: actions/cache@v4
+      id: playwright-cache
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ matrix.browser }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
+    - name: Install Playwright Browsers
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps ${{ matrix.browser }}
 
-      - name: Install Playwright Dependences (if cached)
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps ${{ matrix.browser }}
+    - name: Run Playwright tests
+      run: npx playwright test --project=${{ matrix.browser }}
 
-      - name: Run Playwright tests
-        run: npx playwright test --project=${{ matrix.browser }}
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report-${{ matrix.browser }}
-          path: playwright-report/
-          retention-days: 30
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report-${{ matrix.browser }}
+        path: playwright-report/
+        retention-days: 30
